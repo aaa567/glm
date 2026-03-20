@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MÜNCH | 慕尼家居 - 触碰时间的质感</title>
+    <!-- 引入Google Fonts: Playfair Display (衬线/标题) 和 Lato (无衬线/正文) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS 变量定义 --- */
+        :root {
+            --color-bg-dark: #1a1614;       /* 极深褐/黑 */
+            --color-bg-card: #241f1c;       /* 卡片深褐 */
+            --color-primary: #8c6b4e;       /* 焦糖/木色 */
+            --color-accent: #c5a059;        /* 香槟金 */
+            --color-text-main: #e8e4df;     /* 米白/灰白 */
+            --color-text-muted: #a8a097;    /* 浅灰褐 */
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Lato', sans-serif;
+            --transition-slow: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-fast: all 0.3s ease;
+        }
+
+        /* --- 全局重置 --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-main);
+            font-family: var(--font-body);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-fast);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* --- 排版工具类 --- */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding {
+            padding: 120px 0;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            font-weight: 400;
+            color: var(--color-text-main);
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .text-center { text-align: center; }
+        .text-justify { text-align: justify; }
+
+        /* --- 动画类 --- */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- 导航栏 --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 0;
+            z-index: 1000;
+            background: rgba(26, 22, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: var(--transition-fast);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            color: var(--color-text-main);
+            font-weight: 600;
+        }
+        .logo span { color: var(--color-accent); }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--color-accent);
+            transition: var(--transition-fast);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-text-main);
+        }
+
+        /* --- Hero 区域 --- */
+        #hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(26, 22, 20, 1)), url('https://picsum.photos/seed/furniture_dark/1920/1080');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* 视差滚动 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: #dcdcdc;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            border: 1px solid var(--color-accent);
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            transition: var(--transition-fast);
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--color-accent);
+            color: var(--color-bg-dark);
+        }
+
+        .btn-primary {
+            background: var(--color-accent);
+            color: var(--color-bg-dark);
+        }
+        .btn-primary:hover {
+            background: #b08d4b;
+            border-color: #b08d4b;
+        }
+
+        /* --- 品牌故事区域 --- */
+        #story {
+            background-color: var(--color-bg-dark);
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .story-image {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .story-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 2px;
+            filter: sepia(20%) contrast(90%);
+            transition: var(--transition-slow);
+        }
+
+        .story-image:hover img {
+            transform: scale(1.03);
+            filter: sepia(0%) contrast(100%);
+        }
+
+        .story-text p {
+            margin-bottom: 1.5rem;
+            color: var(--color-text-muted);
+            font-size: 1.05rem;
+        }
+
+        /* --- 精选系列 --- */
+        #collection {
+            background-color: var(--color-bg-card);
+        }
+
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .product-card {
+            background-color: var(--color-bg-dark);
+            padding: 15px;
+            transition: var(--transition-slow);
+            position: relative;
+            overflow: hidden;
+            group: 'card';
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .product-img-wrapper {
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .product-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .product-card:hover .product-img-wrapper img {
+            transform: scale(1.1);
+        }
+
+        .product-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .product-info .category {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .product-info .price {
+            display: block;
+            margin-top: 10px;
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            color: var(--color-text-muted);
+        }
+
+        /* --- 匠心工艺 --- */
+        #craftsmanship {
+            background-color: var(--color-bg-dark);
+            text-align: center;
+        }
+
+        .craft-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 80px;
+        }
+
+        .craft-item {
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: var(--transition-fast);
+        }
+
+        .craft-item:hover {
+            border-color: var(--color-primary);
+        }
+
+        .craft-icon {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .craft-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .craft-item p {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* --- 画廊/视觉流 --- */
+        .gallery-strip {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        .gallery-item {
+            flex: 1 1 300px;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-slow);
+            opacity: 0.8;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        /* --- 联系我们 --- */
+        #contact {
+            background-color: #201b19;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .contact-details div {
+            margin-bottom: 20px;
+            color: var(--color-text-muted);
+        }
+
+        .contact-details strong {
+            color: var(--color-text-main);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #444;
+            padding: 15px 0;
+            color: var(--color-text-main);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: var(--transition-fast);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-bottom-color: var(--color-accent);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* --- 页脚 --- */
+        footer {
+            background-color: #120e0c;
+            padding: 60px 0 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+            gap: 30px;
+        }
+
+        .footer-brand h2 {
+            margin-bottom: 15px;
+        }
+
+        .footer-brand p {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            max-width: 300px;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+        .footer-links a {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+        .footer-links a:hover {
+            color: var(--color-accent);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        /* --- 响应式 --- */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.8rem; }
+            .story-grid, .contact-layout, .craft-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; } /* 简化处理，移动端隐藏菜单 */
+            .mobile-menu-btn { display: block; }
+            
+            /* 移动端菜单激活状态样式略，保持单文件简洁 */
+            .craft-grid { gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">MÜNCH <span>.</span></div>
+                <div class="nav-links">
+                    <a href="#hero">首页</a>
+                    <a href="#story">品牌故事</a>
+                    <a href="#collection">精选系列</a>
+                    <a href="#craftsmanship">匠心工艺</a>
+                    <a href="#contact">预约鉴赏</a>
+                </div>
+                <div class="mobile-menu-btn" onclick="toggleMenu()">☰</div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero 区域 -->
+    <section id="hero">
+        <div class="hero-content fade-in-up">
+            <span class="section-subtitle">Est. 1986</span>
+            <h1 class="hero-title">让家，<br>成为时间的容器</h1>
+            <p class="hero-desc">在喧嚣的都市中，寻找一处安静的角落。慕尼家居，以百年匠心，致敬生活本质。</p>
+            <a href="#collection" class="btn btn-primary">探索系列</a>
+        </div>
+    </section>
+
+    <!-- 品牌故事 -->
+    <section id="story" class="section-padding">
+        <div class="container">
+            <div class="story-grid">
+                <div class="story-image fade-in-up">
+                    <!-- 占位图：工匠制作/木材纹理 -->
+                    <img src="https://picsum.photos/seed/woodcraft/800/600" alt="Craftsmanship details">
+                </div>
+                <div class="story-text fade-in-up">
+                    <span class="section-subtitle">Our Philosophy</span>
+                    <h2 class="section-title">不为繁华易匠心</h2>
+                    <p>在慕尼，我们相信家具不仅仅是居住的容器，更是情感的寄托。每一块木材的选择，都始于对自然的敬畏；每一道缝线的穿梭，都承载着时间的重量。</p>
+                    <p>我们拒绝工业化的冰冷复制，坚持手工打磨的温润触感。从北美黑胡桃的木纹肌理，到意大利头层牛皮的细腻呼吸，我们致力于将大自然的馈赠，转化为您家中传世的经典。</p>
+                    <a href="#craftsmanship" class="btn">了解工艺</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 视觉过渡带 -->
+    <div class="gallery-strip">
+        <div class="gallery-item"><img src="https://picsum.photos/seed/interior_dark/600/600" alt="Interior 1"></div>
+        <div class="gallery-item"><img src="https://picsum.photos/seed/chair_dark/600/600" alt="Interior 2"></div>
+        <div class="gallery-item"><img src="https://picsum.photos/seed/lamp_dark/600/600" alt="Interior 3"></div>
+        <div class="gallery-item"><img src="https://picsum.photos/seed/table_dark/600/600" alt="Interior 4"></div>
+    </div>
+
+    <!-- 精选系列 -->
+    <section id="collection" class="section-padding">
+        <div class="container">
+            <div class="text-center fade-in-up">
+                <span class="section-subtitle">The Collection</span>
+                <h2 class="section-title">当季甄选</h2>
+            </div>
+
+            <div class="collection-grid">
+                <!-- 产品卡片 1 -->
+                <div class="product-card fade-in-up">
+                    <div class="product-img-wrapper">
+                        <img src="https://picsum.photos/seed/sofa_luxury/600/800" alt="The Lounge Sofa">
+                    </div>
+                    <div class="product-info">
+                        <span class="category">Living Room</span>
+                        <h3>云憩·沙发</h3>
+                        <span class="price">¥ 28,800</span>
+                    </div>
+                </div>
+
+                <!-- 产品卡片 2 -->
+                <div class="product-card fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="product-img-wrapper">
+                        <img src="https://picsum.photos/seed/chair_velvet/600/800" alt="The Royal Armchair">
+                    </div>
+                    <div class="product-info">
+                        <span class="category">Seating</span>
+                        <h3>伯爵·扶手椅</h3>
+                        <span class="price">¥ 12,500</span>
+                    </div>
+                </div>
+
+                <!-- 产品卡片 3 -->
+                <div class="product-card fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="product-img-wrapper">
+                        <img src="https://picsum.photos/seed/table_wood/600/800" alt="The Heritage Table">
+                    </div>
+                    <div class="product-info">
+                        <span class="category">Dining Room</span>
+                        <h3>岁月·餐桌</h3>
+                        <span class="price">¥ 35,000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center" style="margin-top: 60px;">
+                <a href="#" class="btn">浏览全部作品</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 匠心工艺 -->
+    <section id="craftsmanship" class="section-padding">
+        <div class="container">
+            <span class="section-subtitle">Why MÜNCH</span>
+            <h2 class="section-title">极致工艺的三个维度</h2>
+            
+            <div class="craft-grid">
+                <div class="craft-item fade-in-up">
+                    <div class="craft-icon">✦</div>
+                    <h4>选材严苛</h4>
+                    <p>只选用树龄超过50年的优质原木，经过自然风干三年以上，确保木材性质稳定，不变形，不开裂。</p>
+                </div>
+                <div class="craft-item fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="craft-icon">✧</div>
+                    <h4>手工雕刻</h4>
+                    <p>拒绝数控机床的千篇一律。每一处弧度，每一个花纹，皆由拥有30年经验的老匠人手工雕琢，赋予家具灵魂。</p>
+                </div>
+                <div class="craft-item fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="craft-icon">★</div>
+                    <h4>生态涂装</h4>
+                    <p>采用进口天然木蜡油，零甲醛释放。既保留了木材天然的呼吸感，又能形成历久弥新的保护层。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我们 -->
+    <section id="contact" class="section-padding">
+        <div class="container">
+            <div class="contact-layout">
+                <div class="contact-info fade-in-up">
+                    <span class="section-subtitle">Get in Touch</span>
+                    <h3>预约私人鉴赏</h3>
+                    <p style="color:var(--color-text-muted); margin-bottom: 30px;">
+                        为了给您提供最尊贵的体验，我们的展厅实行预约制。请留下您的信息，我们的家居顾问将在24小时内与您联系，为您定制专属的家居方案。
+                    </p>
+                    <div class="contact-details">
+                        <div>
+                            <strong>展厅地址</strong>
+                            上海市徐汇区西岸艺术中心 A座 101
+                        </div>
+                        <div>
+                            <strong>联系电话</strong>
+                            +86 21 8888 6666
+                        </div>
+                        <div>
+                            <strong>电子邮箱</strong>
+                            vip@munych-home.com
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form fade-in-up">
+                    <form onsubmit="event.preventDefault(); alert('感谢您的预约，我们会尽快联系您。');">
+                        <div class="form-group">
+                            <input type="text" placeholder="您的姓名 / Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="电子邮箱 / Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" placeholder="联系电话 / Phone">
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="您感兴趣的产品或需求 / Message"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 10px; width: 100%;">提交预约</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h2>MÜNCH<span>.</span></h2>
+                    <p>致力于打造跨越时光的家居艺术。</p>
+                </div>
+                <div class="footer-links">
+                    <h4 style="color: #fff; margin-bottom: 15px;">探索</h4>
+                    <ul>
+                        <li><a href="#">关于我们</a></li>
+                        <li><a href="#">品牌历程</a></li>
+                        <li><a href="#">线下展厅</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4 style="color: #fff; margin-bottom: 15px;">服务</h4>
+                    <ul>
+                        <li><a href="#">定制服务</a></li>
+                        <li><a href="#">保养指南</a></li>
+                        <li><a href="#">会员权益</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4 style="color: #fff; margin-bottom: 15px;">关注</h4>
+                    <ul>
+                        <li><a href="#">WeChat</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Weibo</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 MÜNCH Home. All Rights Reserved. Designed for Excellence.
+            </div>
+        </div>
+    </footer>
+
+    <!-- 简单的交互脚本 -->
+    <script>
+        // 滚动淡入效果
+        function initFadeInAnimation() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // 只触发一次
+                    }
+                });
+            }, observerOptions);
+
+            const fadeElements = document.querySelectorAll('.fade-in-up');
+            fadeElements.forEach(el => observer.observe(el));
+        }
+
+        // 初始化动画
+        initFadeInAnimation();
+
+        // 移动端菜单切换（简化版）
+        function toggleMenu() {
+            const nav = document.querySelector('.nav-links');
+            if (nav.style.display === 'flex') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'flex';
+                nav.style.flexDirection = 'column';
+                nav.style.position = 'absolute';
+                nav.style.top = '70px';
+                nav.style.left = '0';
+                nav.style.width = '100%';
+                nav.style.background = '#1a1614';
+                nav.style.padding = '20px';
+                nav.style.borderBottom = '1px solid #333';
+            }
+        }
+    </script>
+</body>
+</html>
